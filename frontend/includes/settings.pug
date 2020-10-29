@@ -48,16 +48,26 @@ mixin switch(id)
   input#remove.long()
 
 .row
+  p.footnote If you are going to change the layout, please use the
+    | 
+    a(href="next") 2.0 preview
+    |
+    | (it's much easier there)
+
+.row
   p.footnote A small list of alternate layouts can be found
     | 
     a(href="https://github.com/zaxutic/kh2fm-rando-tracker/wiki" target="_blank") here
     | .
 
 .row
-  p Use minimal icons
+  p Icon style
   .note
-    p Going back to normal icons for now requires a refresh after disabling the option.
-  +switch("minimal_icons")
+    p Classic switches the drive and summon icons back to their pre-Televo versions.
+  select#icon_style
+    option(value="") Default
+    option(value="simple") Minimal
+    option(value="classic") Classic
 
 .row
   p.footnote
