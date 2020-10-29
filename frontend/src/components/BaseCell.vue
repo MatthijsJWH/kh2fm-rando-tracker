@@ -9,6 +9,7 @@
       :src="custom('file', `img/${file}.png`)"
       :class="{ opaque: cell.opaque, disabled: cell.disabled }"
     )
+
     template(v-if="!cell.disabled")
       transition(name="fade-up")
         img.number(
@@ -21,10 +22,14 @@
           :src="`img/nobody/${cell.data}.png`"
         )
       transition(name="fade-up")
-        img.secondary(
-          v-if="cell.secondary && cell.secondaryLevel"
-          :src="`img/${secondaryFile}.png`"
-        )
+        .secondary(v-if="cell.secondaryLevel")
+          img(:src="`img/${secondaryFile}.png`")
+          transition(name="fade-up")
+            img.number(
+              v-if="secondaryNumber"
+              :src="`img/numbers/${secondaryNumber}.png`"
+            )
+
     transition(name="fade-cross")
       img.cross(v-if="cell.disabled", src="img/cross.png")
 </template>
@@ -42,6 +47,10 @@ export default class BaseCell extends Vue {
 
   get secondaryFile(): string {
     return this.$store.getters["tracker/secondary"](this.client, this.file);
+  }
+
+  get secondaryNumber(): string {
+    return this.$store.getters["tracker/secondaryNumber"](this.client, this.file);
   }
 
   get customDefaults() {
@@ -124,8 +133,7 @@ img
   filter drop-shadow(1px 1px 5px rgba(0, 0, 0, .4))
 
 .icon
-  max-width 100%
-  max-height 100px
+  width 100%
   opacity .35
   transition opacity .25s
 
@@ -151,10 +159,23 @@ img
   position absolute
   top 5%
   right 0
-  width 30%
+  width 35%
+
+  img
+    width 100%
+
+  .number
+    top 0
+    left 5%
+    height 50%
+    width auto
+
+    &[src="img/numbers/max.png"]
+      left 25%
 
   /.drive &
   /.hundred_acre &
+  /.levels &
     left 0
     top 7.5%
     width 75%
